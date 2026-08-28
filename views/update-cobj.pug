@@ -1,0 +1,50 @@
+doctype html
+html
+    head
+        title= title
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+
+    body
+        if study
+            h1 Update Study
+        else
+            h1 Add Study
+
+        form(
+            method="POST"
+            action=study ? `/update-cobj?id=${encodeURIComponent(study.id)}` : '/update-cobj'
+        )
+
+            .form-group
+                label(for="course_name") Course Name
+                input(
+                    type="text"
+                    id="course_name"
+                    name="course_name"
+                    value=study ? study.properties.course_name : ''
+                    required
+                )
+
+            .form-group
+                label(for="course_description") Course Description
+                textarea(
+                    id="course_description"
+                    name="course_description"
+                    rows="5"
+                )= study ? study.properties.course_description : ''
+
+            .form-group
+                label(for="course_duration") Course Duration
+                input(
+                    type="text"
+                    id="course_duration"
+                    name="course_duration"
+                    value=study ? study.properties.course_duration : ''
+                    required
+                )
+
+            button(type="submit")= study ? 'Update Study' : 'Add Study'
+
+        p
+            a(href="/") Cancel
