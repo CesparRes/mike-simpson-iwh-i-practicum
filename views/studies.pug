@@ -14,16 +14,24 @@
 //-                     h2.card__name #{contact.properties.firstname}  #{contact.properties.lastname}
 //-                     p.card__email #{contact.properties.email}
 doctype html
-html 
-     head 
-         title= `${title}`
-         meta(name="viewport" content="width=device-width, initial-scale=1")
-         link(rel="stylesheet", href="/css/style.css")
-     body    
-         h1 Courses
-         .cards 
-             each studies in data
-                 .card 
-                     h2.card__name #{studies.properties.course_name}
-                     p.card__email #{studies.properties.course_description}
-                     p.card__contact #{studies.properties.course_duration}
+doctype html
+html
+    head
+        title= title
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(rel="stylesheet", href="/css/style.css")
+
+    body
+        h1 Studies / Courses
+
+        p
+            a(href="/update-cobj") Add New Study
+
+        .cards
+            each study in data
+                .card
+                    h2.card__name= study.properties.course_name
+                    p.card__email= study.properties.course_description
+                    p.card__contact= study.properties.course_duration
+
+                    a(href=`/update-cobj?id=${encodeURIComponent(study.id)}`) Edit

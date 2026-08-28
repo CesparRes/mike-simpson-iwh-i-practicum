@@ -43,27 +43,32 @@ app.get('/', async (req, res) => {
 // TODO: ROUTE 2 - Create a new app.get route for the form to create or update new custom object data. Send this data along in the next route.
 
 // * Code for Route 2 goes here
-app.post('/update', async (req, res) => {
-    const update = {
-        properties: {
-            "favorite_book": req.body.newVal
-        }
+app.get('/update-cobj', async (req, res) => {
+
+    const objectId = req.query.id;
+
+    if (!objectId) {
+        return res.render('update-cobj', {
+            title: 'Add Course | HubSpot APIs',
+            study: null
+        });
     }
 
-    const email = req.query.email;
-    const updateContact = `https://api.hubapi.com/crm/v3/objects/contacts/${email}?idProperty=email`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
+    // update selected course
+    const url = `${HUBSPOT_BASE_URL}/${encodeURIComponent(objectId)}?properties=course_name,course_description,course_duration`;
 
-    try { 
-        await axios.patch(updateContact, update, { headers } );
-        res.redirect('back');
-    } catch(err) {
-        console.error(err);
+    try {
+        const resp = await axios.get(url, { headers });
+
+        res.render('update-cobj', {
+            title: 'Update Course | HubSpot APIs',
+            study: resp.data
+        });
+
+    } catch (error) {
+        console.error(error.response?.data || error.message);
+        res.status(500).send('Unable to retrieve the course');
     }
-
 });
 
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
