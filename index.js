@@ -34,7 +34,7 @@ app.get('/', async (req, res) => {
         console.log(JSON.stringify(resp.data.results, null, 2));
 
         const data = resp.data.results;
-        res.render('studies', { title: 'Courses | HubSpot APIs', data });
+        res.render('homepage', { title: 'Courses | HubSpot APIs', data });
 
     } catch (error) {
         console.error(error);
