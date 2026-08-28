@@ -17,15 +17,16 @@ const PRIVATE_APP_ACCESS = process.env.PRIVATE_APP_ACCESS;
 const HUBSPOT_OBJECT = '2-252531259';
 const HUBSPOT_BASE_URL = `https://api.hubspot.com/crm/v3/objects/`;
 
+const headers = {
+        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+        'Content-Type': 'application/json'
+    };
+
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 
 // * Code for Route 1 goes here
 app.get('/', async (req, res) => {
     const studies = `${HUBSPOT_BASE_URL}${HUBSPOT_OBJECT}?properties=course_name,course_description,course_duration`;
-    const headers = {
-        Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
-        'Content-Type': 'application/json'
-    };
 
     try {
         const resp = await axios.get(studies, { headers });
@@ -54,8 +55,8 @@ app.get('/update-cobj', async (req, res) => {
         });
     }
 
-    // update selected course
-    const url = `${HUBSPOT_BASE_URL}/${encodeURIComponent(objectId)}?properties=course_name,course_description,course_duration`;
+    // Update selected course
+    const url = `${HUBSPOT_BASE_URL}${HUBSPOT_OBJECT}/${encodeURIComponent(objectId)}?properties=course_name,course_description,course_duration`;
 
     try {
         const resp = await axios.get(url, { headers });
