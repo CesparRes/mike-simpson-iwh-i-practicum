@@ -89,17 +89,19 @@ app.post('/update-cobj', async (req, res) => {
 
     try {
 
-        // Existing study
+        // Existing study - update it
         if (objectId) {
 
-            const url = `${HUBSPOT_BASE_URL}/${encodeURIComponent(objectId)}`;
+            const url = `${HUBSPOT_BASE_URL}${HUBSPOT_OBJECT}/${encodeURIComponent(objectId)}`;
 
             await axios.patch(url, update, { headers });
 
         } else {
 
-            // New study
-            await axios.post(HUBSPOT_BASE_URL, update, { headers });
+            // New study - create it
+            const url = `${HUBSPOT_BASE_URL}${HUBSPOT_OBJECT}`;
+
+            await axios.post(url, update, { headers });
 
         }
 
