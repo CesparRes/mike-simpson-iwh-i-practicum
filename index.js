@@ -75,6 +75,41 @@ app.get('/update-cobj', async (req, res) => {
 // TODO: ROUTE 3 - Create a new app.post route for the custom objects form to create or update your custom object data. Once executed, redirect the user to the homepage.
 
 // * Code for Route 3 goes here
+app.post('/update-cobj', async (req, res) => {
+
+    const objectId = req.query.id;
+
+    const update = {
+        properties: {
+            course_name: req.body.course_name,
+            course_description: req.body.course_description,
+            course_duration: req.body.course_duration
+        }
+    };
+
+    try {
+
+        // Existing study
+        if (objectId) {
+
+            const url = `${HUBSPOT_BASE_URL}/${encodeURIComponent(objectId)}`;
+
+            await axios.patch(url, update, { headers });
+
+        } else {
+
+            // New study
+            await axios.post(HUBSPOT_BASE_URL, update, { headers });
+
+        }
+
+        res.redirect('/');
+
+    } catch (error) {
+        console.error(error.response?.data || error.message);
+        res.status(500).send('Unable to save the course');
+    }
+});
 
 /** 
 * * This is sample code to give you a reference for how you should structure your calls. 
